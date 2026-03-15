@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kasaysayan ng Mundo – World History in Taglish</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --dark: #0d0a06;
+    --deep: #1a1408;
+    --parchment: #f5ead5;
+    --rust: #8b2e0f;
+    --ivory: #fdf6e3;
+    --muted: #7a6a52;
+    --accent: #e8c96b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dark);
+    color: var(--parchment);
+    font-family: 'Lora', serif;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    background: radial-gradient(ellipse at top, #2a1f08 0%, var(--dark) 70%);
+    border-bottom: 1px solid #3a2e18;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .subtitle-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--accent);
+    text-shadow: 0 2px 30px rgba(201,168,76,0.3);
+    animation: fadeDown 0.9s ease 0.1s both;
+  }
+
+  .tagline {
+    margin-top: 14px;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1rem;
+    animation: fadeDown 1s ease 0.2s both;
+  }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 28px 20px;
+    background: var(--deep);
+    border-bottom: 1px solid #2a2010;
+    animation: fadeDown 1s ease 0.3s both;
+  }
+
+  .filter-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border: 1px solid #3a2e18;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.25s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* MAIN GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: #1f1810;
+    padding: 1px;
+  }
+
+  .card {
+    background: var(--deep);
+    padding: 32px 28px;
+    cursor: pointer;
+    transition: background 0.3s;
+    position: relative;
+    animation: fadeUp 0.6s ease both;
+  }
+  .card:hover { background: #231c0c; }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--gold);
+    transition: height 0.3s ease;
+  }
+  .card:hover::before { height: 100%; }
+
+  .era-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .era-badge::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, #3a2e18, transparent);
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .card-year {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    color: var(--rust);
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+
+  .card-desc {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #b09a7a;
+  }
+
+  .card-tag {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border: 1px solid #3a2e18;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--deep);
+    border: 1px solid #3a2e18;
+    max-width: 620px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 40px 36px;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .modal-era {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .modal-year {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    color: var(--rust);
+    margin-bottom: 20px;
+  }
+
+  .modal-body {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: #c5ae89;
+  }
+
+  .modal-body strong { color: var(--accent); }
+
+  .modal-highlight {
+    margin-top: 22px;
+    padding: 16px 20px;
+    border-left: 3px solid var(--gold);
+    background: rgba(201,168,76,0.05);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px; right: 20px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-family: serif;
+  }
+  .close-btn:hover { color: var(--accent); }
+
+  /* SEARCH */
+  .search-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 24px 20px 8px;
+    background: var(--deep);
+  }
+  .search-input {
+    font-family: 'Lora', serif;
+    font-size: 0.9rem;
+    background: #120f07;
+    border: 1px solid #3a2e18;
+    color: var(--parchment);
+    padding: 10px 20px;
+    width: 100%;
+    max-width: 480px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { border-color: var(--gold); }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+    font-style: italic;
+    grid-column: 1/-1;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--deep);
+    border-top: 1px solid #2a2010;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  footer span { color: var(--gold); }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hidden { display: none !important; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: #3a2e18; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="subtitle-tag">✦ Taglish Edition ✦</p>
+  <h1>Kasaysayan ng Mundo</h1>
+  <p class="tagline">World History — Para sa lahat ng curious minds 📜</p>
+</header>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" id="searchInput" placeholder="Hanapin ang event o era… (e.g. Egypt, Rome, War)">
+</div>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-era="all">Lahat (All)</button>
+  <button class="filter-btn" data-era="ancient">Ancient</button>
+  <button class="filter-btn" data-era="medieval">Medieval</button>
+  <button class="filter-btn" data-era="renaissance">Renaissance</button>
+  <button class="filter-btn" data-era="modern">Modern</button>
+  <button class="filter-btn" data-era="contemporary">Contemporary</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="close-btn" id="closeBtn">✕</button>
+    <div class="modal-era" id="mEra"></div>
+    <div class="modal-title" id="mTitle"></div>
+    <div class="modal-year" id="mYear"></div>
+    <div class="modal-body" id="mBody"></div>
+    <div class="modal-highlight" id="mQuote"></div>
+  </div>
+</div>
+
+<footer>
+  <span>Kasaysayan ng Mundo</span> &nbsp;·&nbsp; Taglish World History App &nbsp;·&nbsp; Para sa mga nag-aaral at curious na Pilipino
+</footer>
+
+<script>
+const events = [
+  {
+    era: "ancient",
+    title: "Ang Sinaunang Egypt",
+    subtitle: "Ancient Egypt",
+    year: "c. 3100 BCE",
+    short: "Ang great civilization na nagtatag ng mga pyramids — monuments na hanggang ngayon, nakaka-amaze pa rin!",
+    body: `<strong>Ang Ancient Egypt</strong> ay isa sa pinaka-influential na civilizations sa buong kasaysayan ng mundo. Nagsimula ito noong mga <strong>3100 BCE</strong> nang mag-unite ang Upper at Lower Egypt sa ilalim ng isang pharaoh.\n\nAng mga Egyptians ay kilala sa kanilang <strong>mga pyramids</strong> — ang pinakamalaking isa ay ang Great Pyramid of Giza, na itinayo para sa Pharaoh Khufu. Hindi pa rin natin lubos na naiintindihan kung paano nila nagawa iyon without modern technology!\n\nBukod sa pyramids, ang mga Egyptians ay nagbigay sa mundo ng <strong>hieroglyphics</strong> (isang uri ng writing system), pati na rin ang mga advances sa medicine, mathematics, at astronomy.`,
+    quote: "\"Sa loob ng 3,000 taon, ang Egypt ay nanatiling isang superpowersa ancient world — longer pa kaysa sa total na edad ng Western civilization ngayon.\""
+  },
+  {
+    era: "ancient",
+    title: "Ang Rise ng Greece",
+    subtitle: "Ancient Greece",
+    year: "c. 800–300 BCE",
+    short: "Dito nagsimula ang democracy, philosophy, at Olympics — oo, Filipino ka man, nakautang ka sa Greece!",
+    body: `<strong>Ancient Greece</strong> ay hindi isang bansa noon — ito ay isang collection ng <strong>city-states</strong> (o tinatawag na poleis), tulad ng Athens, Sparta, at Corinth.\n\nSa <strong>Athens</strong>, nagsimula ang unang konsepto ng <strong>democracy</strong> — bagamat limitado pa ito (women at slaves ay hindi kasama). Dito rin namuhay ang mga pilosopo tulad nina <strong>Socrates, Plato, at Aristotle</strong> — ang kanilang mga idea ay nag-shape ng Western philosophy hanggang ngayon.\n\nAng <strong>Sparta</strong> naman ay isang military state — ang mga batang lalaki ay nagsisimulang mag-train bilang soldiers sa edad na 7! Intense, di ba?\n\nAng <strong>Olympic Games</strong> ay nagsimula sa Greece noong 776 BCE bilang religious festival para sa diyos na si Zeus.`,
+    quote: "\"Democracy, science, philosophy, theater, Olympics — malaking utang ng mundo sa mga sinaunang Griyego.\""
+  },
+  {
+    era: "ancient",
+    title: "Ang Roman Empire",
+    subtitle: "The Rise and Fall of Rome",
+    year: "753 BCE – 476 CE",
+    short: "Ang pinaka-powerful na empire sa ancient world — nagtatayo ng roads kahit saan, at ang kanilang mga batas ay nandito pa rin hanggang ngayon.",
+    body: `Ang <strong>Roman Empire</strong> ay isa sa pinakadakilang empires na nagkaroon ang mundo. Sa rurok nito, kontrolado nito ang halos lahat ng Europa, North Africa, at parts ng Middle East.\n\nAng mga Romans ay master builders — nagtatayo sila ng <strong>roads, aqueducts, at coliseums</strong>. Ang kanilang sistema ng <strong>batas (Roman Law)</strong> ay ang pundasyon ng maraming legal systems ngayon, kasama na ang ating Constitution.\n\nNagsimula bilang republic, naging empire ito sa ilalim ni <strong>Julius Caesar</strong> at ng kanyang pamangkin na si <strong>Augustus Caesar</strong>. Pero noong <strong>476 CE</strong>, bumagsak ang Western Roman Empire dahil sa internal corruption at external invasions ng mga Germanic tribes.`,
+    quote: "\"'All roads lead to Rome' — literal na totoo ito noon. Ang Roman road network ay umabot sa mahigit 400,000 km!\""
+  },
+  {
+    era: "ancient",
+    title: "Ang Great Wall ng China",
+    subtitle: "Ancient China & the Great Wall",
+    year: "c. 221 BCE",
+    short: "Ang pinakamahabang human-made structure sa mundo — itinayo ng milyun-milyong manggagawa para protektahan ang China.",
+    body: `Ang <strong>Great Wall of China</strong> ay sinimulan sa ilalim ng unang Emperor ng China, si <strong>Qin Shi Huang</strong>, noong mga 221 BCE. Ang layunin nito? Protektahan ang China mula sa mga invaders galing sa north, lalo na ang mga Mongols.\n\nAng totoo, hindi ito iisa lang na wall — ito ay isang <strong>sistema ng mga walls, watchtowers, at fortifications</strong> na itinayo ng iba't ibang dynasties sa loob ng mahigit 2,000 taon. Total length nito ay halos <strong>21,000 km</strong>!\n\nIsang malungkot na fact: ang mga manggagawang namatay sa construction ay inilibing sa loob ng wall mismo. Kaya nga sinasabi ng ilan na ito ay "pinakamahaba na sementeryo sa mundo."\n\nContra sa popular belief, <strong>hindi ito makikita from space</strong> — legend lang iyon!`,
+    quote: "\"Ang Great Wall ay hindi lang isang pader — ito ay simbolo ng determination ng isang bansa na maprotektahan ang sarili.\""
+  },
+  {
+    era: "medieval",
+    title: "Ang Dark Ages",
+    subtitle: "The Medieval Period in Europe",
+    year: "c. 500–1000 CE",
+    short: "Pagkatapos ng Roman Empire, dumating ang panahon ng kawalang-katiyakan — pero hindi ito ganoon kadilim kung iniisip mo.",
+    body: `Ang tinatawag na <strong>\"Dark Ages\"</strong> ay ang panahon pagkatapos ng pagbagsak ng Roman Empire. Noon, maraming Roman knowledge at infrastructure ang nawala sa Europa.\n\nPero ang terminong \"dark\" ay medyo unfair — sa ibang bahagi ng mundo, nag-<strong>flourish</strong> ang mga sibilisasyon! Ang <strong>Islamic Golden Age</strong> ay nagbibigay ng advances sa mathematics, medicine, at astronomy. Ang mga Chinese dynasties ay nag-invent ng gunpowder at printing press.\n\nSa Europa mismo, ang <strong>Catholic Church</strong> ang naging pinaka-powerful na institution. Ang mga monasteries ay naging centers of learning — doon pinanatili ang maraming ancient texts.\n\nAng <strong>feudal system</strong> ang naging social structure — may king sa taas, tapos lords, knights, at sa pinaka-ibaba, ang mga serfs (farmers na halos alipin ang status).`,
+    quote: "\"Ang 'Dark Ages' ay dark lang kung titingnan mo mula sa European perspective — ang resto ng mundo ay patuloy na umuunlad!\""
+  },
+  {
+    era: "medieval",
+    title: "Ang Crusades",
+    subtitle: "The Holy Wars",
+    year: "1095–1291 CE",
+    short: "Mga religious wars para sa Jerusalem — ito ang isa sa pinaka-controversial na chapters ng kasaysayan ng Simbahan.",
+    body: `Ang <strong>Crusades</strong> ay serye ng religious wars na sinimulan ng <strong>Catholic Church</strong> para ma-recapture ang Holy Land (lalo na ang Jerusalem) mula sa mga Muslim rulers.\n\nNoong <strong>1095</strong>, nag-preach si Pope Urban II at daan-daang libong tao ang nag-sign up para lumaban — kasama ang mga noble, knights, at kahit mga ordinaryong mamamayan.\n\nMay total na <strong>9 major Crusades</strong>. Sa una, nakuha ng mga Crusaders ang Jerusalem (1099) ngunit may kasamang brutal massacres ng mga Muslim at Jewish residents.\n\nSa huli, hindi naging matagumpay ang Crusades sa layunin nilang permanenteng control ng Holy Land. Ngunit nag-iwan ito ng malaking <strong>cultural exchange</strong> — maraming Islamic knowledge ang nakapasok sa Europa, na nag-trigger ng Renaissance.`,
+    quote: "\"Ang Crusades ay nagpakita kung gaano kapowerful ang religious conviction — at kung gaano ito maaring maging mapanganib.\""
+  },
+  {
+    era: "medieval",
+    title: "Ang Black Death",
+    subtitle: "The Bubonic Plague",
+    year: "1347–1351 CE",
+    short: "Ang pinakamalaking pandemic sa kasaysayan — napatay nito ang halos kalahati ng populasyon ng Europe sa loob ng ilang taon.",
+    body: `Ang <strong>Black Death</strong> ay isang devastating pandemic na dulot ng bacteria na <strong>Yersinia pestis</strong>. Kumalat ito mula sa Central Asia, dumaan sa Silk Road, at umabot sa Europa noong 1347.\n\nSa loob ng <strong>5 taon (1347–1351)</strong>, tinanggal nito ang estimated <strong>30–60% ng European population</strong> — halos 25 million katao! Pag-isipan mo iyon.\n\nAng sintomas ay malubha: pamamaga ng lymph nodes (tinatawag na \"buboes\"), maitim na spots sa balat, at lagnat. Karamihan ay namamatay sa loob ng ilang araw.\n\nAng epekto nito sa society ay napakalaki. Labor shortage ay nagbigay ng bargaining power sa mga surviving workers. Ang pagtanaw ng tao sa buhay at kamatayan ay nagbago. Marami ring nagdududa sa Simbahan — bakit hindi naprotektahan ng Diyos ang mga tapat na Kristiyano?`,
+    quote: "\"Ang Black Death ay hindi lang isang medical disaster — ito ay nagbago ng economics, religion, at social structure ng entire Europe.\""
+  },
+  {
+    era: "renaissance",
+    title: "Ang Renaissance",
+    subtitle: "Rebirth of Art & Knowledge",
+    year: "c. 1300–1600 CE",
+    short: "Ang panahon ng pagbabalik ng sining, agham, at humanismo — dito namuhay sina Leonardo da Vinci at Michelangelo.",
+    body: `Ang salitang <strong>\"Renaissance\"</strong> ay Pranses para sa \"rebirth\" — at literal na iyon ang nangyari. Pagkatapos ng Medieval period, muling natuklasan ng Europe ang classical Greek at Roman knowledge, na-inspire ng mga Arab scholars.\n\nNagsimula ito sa <strong>Italy</strong>, lalo na sa Florence, na pinamahalaan ng Medici family — ang pinaka-influential na patrons ng arts at learning.\n\nAng <strong>Leonardo da Vinci</strong> ay isa sa pinaka-iconic na figures — hindi lang siya pintor (Mona Lisa, The Last Supper), kundi scientist, engineer, at inventor din. Ang kanyang notebooks ay puno ng ideas na nauna sa kanyang panahon ng daan-daang taon!\n\nAng <strong>Gutenberg's printing press</strong> (c. 1440) ay isa sa pinaka-revolutionary inventions ng panahon na ito — nagpabilis ng pagkalat ng knowledge at nag-democratize ng literacy.`,
+    quote: "\"Ang Renaissance ay nagpakita na ang tao ay may kakayahang mag-excel sa maraming fields nang sabay-sabay — ang ideal ng 'Renaissance man'.\""
+  },
+  {
+    era: "renaissance",
+    title: "Ang Age of Exploration",
+    subtitle: "Pagtuklas ng Bagong Mundo",
+    year: "1400s–1600s CE",
+    short: "Ang panahon nang natuklasan ng mga Europeo ang Americas — at ang Pilipinas! Si Magellan ay dumating noong 1521.",
+    body: `Ang <strong>Age of Exploration</strong> ay ang panahon nang nagsimulang mag-venture ang mga European nations sa unknown waters para hanapin ang bagong trade routes at territories.\n\nSi <strong>Christopher Columbus</strong> ay nakarating sa Americas noong <strong>1492</strong> — sa tingin niya ay India siya, kaya tinawag niya ang mga tao na \"Indians.\" Medyo awkward na pagkakamali sa kasaysayan!\n\nSi <strong>Ferdinand Magellan</strong> — oo, ang Magellan na kilala natin — ay nag-circumnavigate ng mundo (kahit hindi niya natapos dahil namatay siya sa Mactan, Pilipinas noong <strong>1521</strong> sa kamay ni Lapulapu).\n\nAng dark side nito: ang exploration ay nagdala rin ng <strong>colonization, slavery, at extinction ng mga indigenous cultures</strong>. Ang pagdating ng Espanyol sa Americas ay nagdulot ng pagkamatay ng estimated 90% ng indigenous population dahil sa diseases at violence.`,
+    quote: "\"Para sa mga Europeo, ito ay 'discovery.' Para sa mga indigenous peoples, ito ay simula ng daan-taong pagdurusa.\""
+  },
+  {
+    era: "modern",
+    title: "Ang French Revolution",
+    subtitle: "Liberté, Égalité, Fraternité",
+    year: "1789–1799 CE",
+    short: "Nang pinaalis (at pinoputol) ng mga Pranses ang kanilang hari — isang revolution na nagbago ng political landscape ng buong mundo.",
+    body: `Ang <strong>French Revolution</strong> ay nagsimula noong <strong>1789</strong> nang mag-uprising ang mga Pranses laban sa monarkiya ni King Louis XVI at sa extreme inequality ng lipunan.\n\nAng society noon ay naka-divide sa tatlong \"estates\" (klase): ang Clergy (1st), ang Nobility (2nd), at ang lahat ng iba pa — ang ordinary people (3rd). Ang 3rd Estate ay nagbabayad ng halos lahat ng taxes, habang ang mga noble at clergy ay halos exempt.\n\nAng iconic na simbolo ng revolution ay ang <strong>guillotine</strong> — ang makina ng \"justice\" na gumapas ng mahigit 17,000 ulo, kasama na ang hari at reina (Louis XVI at Marie Antoinette).\n\nAng mga ideya ng revolution — <strong>liberty, equality, fraternity</strong> — ay nag-inspire ng mga revolutions sa buong mundo, kasama na ang Latin American independence movements at ang ating sariling Filipino Revolution!`,
+    quote: "\"Ang French Revolution ay nagpakita na ang mga tao, kapag sapat na ang gutom at galit, ay kaya nilang baguhin ang kanilang mundo.\""
+  },
+  {
+    era: "modern",
+    title: "Ang Industrial Revolution",
+    subtitle: "Simula ng Makabagong Mundo",
+    year: "c. 1760–1840 CE",
+    short: "Ang panahon nang nagsimulang gumamit ng machines ang tao sa production — nagbago nito ang ekonomiya, lipunan, at kalikasan magpahanggang ngayon.",
+    body: `Ang <strong>Industrial Revolution</strong> ay nagsimula sa <strong>Britain</strong> noong kalagitnaan ng 1700s at unti-unting kumalat sa buong mundo. Ito ang transisyon mula sa hand production methods patungo sa machines.\n\nAng <strong>steam engine</strong> (na pinahusay ni James Watt) ang naging puso ng revolution — nagpagana ito ng factories, trains, at ships. Biglang naging possible ang mass production ng goods.\n\nAng epekto sa lipunan ay mixed. Sa isang banda, lumobo ang economies at maraming bagong produkto ang naging available. Sa kabilang banda, ang <strong>working conditions ay brutal</strong> — mahabang oras, mapanganib na environments, at kahit mga bata ay nagtatrabaho sa mga pabrika.\n\nAng Industrial Revolution din ang simula ng ating <strong>climate crisis</strong> — ito ang nag-start ng malawak na paggamit ng fossil fuels na nagdudulot ng greenhouse gases.`,
+    quote: "\"Ang Industrial Revolution ay nagbago ng mundo sa loob ng 100 taon nang higit pa kaysa sa nakaraang 1,000 taon.\""
+  },
+  {
+    era: "modern",
+    title: "Ang World War I",
+    subtitle: "Ang Unang Digmaang Pandaigdig",
+    year: "1914–1918 CE",
+    short: "Ang 'war to end all wars' — kaso hindi naman. Nagsimula sa isang assassinasyon at nagpapatay ng 20 milyong tao.",
+    body: `Ang <strong>World War I</strong> ay nagsimula noong <strong>28 June 1914</strong> nang mapatay si Archduke Franz Ferdinand ng Austria-Hungary sa Sarajevo. Parang isang spark sa isang barrel ng gunpowder — bumagsak ang chain of alliances at nagkaroon ng world war.\n\nAng dalawang panig: ang <strong>Allied Powers</strong> (Britain, France, Russia, eventually USA) at ang <strong>Central Powers</strong> (Germany, Austria-Hungary, Ottoman Empire).\n\nAng labanan ay mostly sa <strong>trenches</strong> — maruruming kanal sa lupa na ginagamit bilang proteksyon. Ang buhay doon ay nakaka-horror: putik, daga, sakit, at constant danger.\n\nAng kabuuang patay: halos <strong>20 million</strong> — military at civilian combined. Ang Treaty of Versailles na nag-end ng giyera ay nagpataw ng napaka-harsh na conditions sa Germany, na direktang nag-set up sa rise of Hitler at World War II.`,
+    quote: "\"Tinawag nila itong 'war to end all wars' — in 20 years, nagkaroon ng mas malaking isa.\""
+  },
+  {
+    era: "modern",
+    title: "Ang World War II",
+    subtitle: "Ang Pinakamalaking Digmaan",
+    year: "1939–1945 CE",
+    short: "Ang pinaka-devastating na giyera sa kasaysayan ng tao — 70-85 milyong patay, kasama ang Holocaust at atomic bombs.",
+    body: `Ang <strong>World War II</strong> ay nagsimula noong <strong>1 September 1939</strong> nang salakayin ng Nazi Germany ang Poland. Ito ang pinakamalawak at pinaka-destructive na giyera sa kasaysayan ng tao.\n\nSi <strong>Adolf Hitler</strong> at ang Nazi regime ay nagpatupad ng <strong>Holocaust</strong> — sistematikong pag-exterminate ng 6 million Jews, kasama ang millions ng iba pang grupos (Roma, LGBTQ+, disabled, at iba pa).\n\nSa Pacific, ang Pilipinas ay <strong>nilipol ng Japan</strong> noong 1941 at inilaya ng US Forces sa ilalim ni General MacArthur noong 1944–45. Maraming Pilipino ang namatay sa occupation at sa Bataan Death March.\n\nNag-end ang giyera sa Europe noong Mayo 1945 (V-E Day), at sa Pacific noong Agosto 1945 pagkatapos i-drop ng USA ang <strong>atomic bombs</strong> sa Hiroshima at Nagasaki — kaganapang hanggang ngayon ay controversial at debatable.`,
+    quote: "\"Ang WWII ay nagpakita sa mundo ang pinaka-mababang antas ng human cruelty at ang pinaka-mataas na antas ng human sacrifice.\""
+  },
+  {
+    era: "contemporary",
+    title: "Ang Cold War",
+    subtitle: "USA vs USSR: Ang Invisible na Giyera",
+    year: "1947–1991 CE",
+    short: "Hindi sila nag-fight directly, pero ang tension between USA at USSR ay halos nag-destroy ng mundo — literally.",
+    body: `Ang <strong>Cold War</strong> ay ang geopolitical tension between ang <strong>USA</strong> (at Western allies) at ang <strong>Soviet Union (USSR)</strong> pagkatapos ng WWII. \"Cold\" ito dahil hindi sila directly nag-labanan — instead, nag-compete sila sa ideology, military power, at influence.\n\nAng pinakamatakot na sandali: ang <strong>Cuban Missile Crisis</strong> ng 1962. Natuklasan ng USA na nagtatayo ang USSR ng nuclear missile bases sa Cuba. Sa loob ng 13 araw, ang mundo ay literal na nasa bingit ng nuclear war.\n\nAng <strong>Space Race</strong> ay isa ring major component — nag-compete sila kung sino ang mauuna sa space. Ang USSR ang unang naglunsad ng satellite (Sputnik, 1957) at tao (Yuri Gagarin, 1961). Ang USA naman ang unang naglapag ng tao sa buwan (Apollo 11, 1969).\n\nNag-end ang Cold War noong <strong>1991</strong> nang mag-dissolve ang Soviet Union. Ito ay nag-transform ng global politics — ang USA ang naging sole superpower, at doon nagsimula ang \"unipolar world.\"`,
+    quote: "\"Ang Cold War ay ang giyera na sana ay hindi nangyari — at halos nangyari sa paraan na nagwawasak ng lahat.\""
+  },
+  {
+    era: "contemporary",
+    title: "Ang Internet Revolution",
+    subtitle: "Ang Pagbabago ng Komunikasyon",
+    year: "1990s – Present",
+    short: "Ang invention na mukhang simpleng communication tool — pero nagbago nito ang lahat: trabaho, relasyon, pulitika, at kultura.",
+    body: `Ang <strong>Internet</strong> ay orihinal na military project ng USA (ARPANET) noong 1960s. Naging available ito sa public noong <strong>1990s</strong> at nagbago ng mundo nang mas mabilis kaysa sa anumang invention before it.\n\nAng <strong>World Wide Web</strong>, na inimbento ni Tim Berners-Lee noong 1991, ang naging interface ng internet para sa mga ordinaryong tao. Biglang may global library of information ang bawat isa.\n\nAng <strong>social media</strong> (Facebook, Twitter/X, Instagram, TikTok) ay nag-transform ng komunikasyon — ngayon, kahit sino ay maaring maging broadcaster ng information sa buong mundo.\n\nAng dark side: <strong>misinformation, cyberbullying, privacy issues, at polarization</strong>. Ang social media algorithms ay designed para i-maximize ang engagement — at ang outrage at fear ay mas engaging kaysa sa positive content.\n\nNgayon, ang internet ay nagpo-power ng AI revolution, na mukhang isa na naman itong major turning point ng kasaysayan.`,
+    quote: "\"Ang internet ay nagbigay sa tao ng access sa lahat ng kaalaman ng mundo — at gayundin sa lahat ng misinformation ng mundo.\""
+  },
+  {
+    era: "contemporary",
+    title: "Ang Climate Crisis",
+    subtitle: "Ang Pinakamalaking Hamon ng Sangkatauhan",
+    year: "Industrial Age – Present",
+    short: "Hindi ito future problem — nangyayari na ito ngayon. At ang Pilipinas ay isa sa pinaka-vulnerable na bansa.",
+    body: `Ang <strong>climate crisis</strong> ay resulta ng daan-taon ng paggamit ng <strong>fossil fuels</strong> (coal, oil, gas) na naglalabas ng greenhouse gases tulad ng CO₂ at methane sa atmospera.\n\nAng epekto ay malinaw na: <strong>rising sea levels, extreme weather events, melting ice caps, coral reef bleaching</strong>, at disruption ng ecosystems sa buong mundo.\n\nAng <strong>Pilipinas</strong> ay isa sa pinaka-vulnerable na bansa sa world — exposed tayo sa typhoons, flooding, at sea level rise. Ang mga lugar tulad ng Manila Bay area at maraming island communities ay nanganganib na matakpan ng tubig sa hinaharap.\n\nAng bawat bansa ay nag-commit sa <strong>Paris Agreement</strong> (2015) na limitahan ang global warming sa 1.5°C above pre-industrial levels. Pero marami sa atin ang off-track pa rin sa ating goals.\n\nIto ang defining challenge ng ating henerasyon — at ng mga susunod pa.`,
+    quote: "\"Ang climate change ay hindi problema ng hinaharap — ito ay problema ng ngayon, na nararamdaman ng mga pinaka-mahihirap na komunidad first.\""
+  }
+];
+
+let activeEra = 'all';
+let searchQuery = '';
+
+function renderCards() {
+  const grid = document.getElementById('grid');
+  const filtered = events.filter(e => {
+    const matchEra = activeEra === 'all' || e.era === activeEra;
+    const q = searchQuery.toLowerCase();
+    const matchSearch = !q || e.title.toLowerCase().includes(q) || e.subtitle.toLowerCase().includes(q) || e.body.toLowerCase().includes(q) || e.era.includes(q);
+    return matchEra && matchSearch;
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty">Walang nahanap. Subukan ang ibang keyword. 🔍</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map((e, i) => `
+    <div class="card" data-idx="${events.indexOf(e)}" style="animation-delay:${i * 0.04}s">
+      <div class="era-badge">${e.era.toUpperCase()}</div>
+      <div class="card-title">${e.title}</div>
+      <div class="card-year">📅 ${e.year}</div>
+      <div class="card-desc">${e.short}</div>
+      <span class="card-tag">Basahin → Read More</span>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => openModal(parseInt(card.dataset.idx)));
+  });
+}
+
+function openModal(idx) {
+  const e = events[idx];
+  document.getElementById('mEra').textContent = `${e.era.toUpperCase()} · ${e.subtitle}`;
+  document.getElementById('mTitle').textContent = e.title;
+  document.getElementById('mYear').textContent = `📅 ${e.year}`;
+  document.getElementById('mBody').innerHTML = e.body.replace(/\n/g, '<br><br>');
+  document.getElementById('mQuote').textContent = e.quote;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+document.getElementById('closeBtn').addEventListener('click', () => {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+});
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) {
+    this.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+document.getElementById('filterBar').addEventListener('click', e => {
+  if (e.target.classList.contains('filter-btn')) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    activeEra = e.target.dataset.era;
+    renderCards();
+  }
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderCards();
+});
+
+renderCards();
+</script>
+</body>
+</html>
